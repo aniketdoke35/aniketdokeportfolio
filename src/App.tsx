@@ -18,39 +18,53 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 const PROJECTS = [
   {
     id: 1,
-    title: "Delhi High Court e-District Portal",
-    category: "Web Portal",
-    description: "Developed the e-District portal. Tech stack includes Next.js, SCSS, Docker, i18n, NextRoute, and SSR.",
-    image: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=2000&auto=format&fit=crop",
-    color: "bg-zinc-100",
-    tags: ["Next.js", "Docker", "SSR"]
+    title: "LetsMakeCV",
+    category: "AI Resume Builder",
+    description: "An AI-powered ATS resume builder that helps users craft professional resumes with advanced tools. Developed using React and TypeScript for a robust frontend.",
+    image: "/project-1.png",
+    link: "https://letsmakecv.com/",
+    color: "bg-blue-50",
+    tags: ["React", "TypeScript", "Tailwind CSS"]
   },
   {
     id: 2,
-    title: "ConnectFM Maintenance",
-    category: "Web Maintenance",
-    description: "Maintained and optimized the ConnectFM platform using React.js, Nginx, and Docker.",
-    image: "https://images.unsplash.com/photo-1516280440502-d9646b9edcce?q=80&w=2000&auto=format&fit=crop",
-    color: "bg-stone-100",
-    tags: ["React.js", "Nginx", "Docker"]
+    title: "Stocx OS",
+    category: "E-commerce Tracker",
+    description: "A trendy e-commerce platform interface for tracking out-of-stock items and discovering emerging brands. Built with React, TypeScript, and modern UI practices.",
+    image: "/project-2.png",
+    link: "https://oss-4--stocx-os.netlify.app/",
+    color: "bg-red-50",
+    tags: ["React", "TypeScript", "Vite"]
   },
   {
     id: 3,
-    title: "Data Insiders",
-    category: "Web Application",
-    description: "Crafted a powerful digital presence for Data Insiders using WordPress, Elementor, and integrated Razorpay for smooth payment processing.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop",
-    color: "bg-blue-50",
-    tags: ["WordPress", "Elementor", "Razorpay"]
+    title: "ConnectFM Media Network",
+    category: "Media Portal",
+    description: "A comprehensive media network platform featuring news, entertainment, videos, and live radio broadcasting. Integrated with scalable backend technologies.",
+    image: "/project-3.png",
+    link: "https://staging.connectfm.ca/",
+    color: "bg-rose-50",
+    tags: ["React", "TypeScript", "Node.js"]
   },
   {
     id: 4,
     title: "Room Wala",
-    category: "Full-Stack App",
-    description: "Built a comprehensive room-finding platform. Utilized Next.js, Tailwind CSS, NextAuth.js, NextApi Routes, MySQL, AWS S3, and AWS RDS.",
-    image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2000&auto=format&fit=crop",
+    category: "Room Sharing Platform",
+    description: "India's #1 room sharing platform that connects verified roommates. Implemented advanced search, filtering, and user authentication.",
+    image: "/project-4.png",
+    link: "https://roomwala.in/",
     color: "bg-purple-50",
-    tags: ["Next.js", "MySQL", "AWS"]
+    tags: ["React", "TypeScript", "Next.js"]
+  },
+  {
+    id: 5,
+    title: "Ashirwad Tour Planner",
+    category: "Travel Agency",
+    description: "A complete tour planning website showcasing domestic and international travel packages with beautiful, immersive image galleries and booking functionality.",
+    image: "/project-5.jpg",
+    link: "https://www.ashirwadtourplanner.com/",
+    color: "bg-emerald-50",
+    tags: ["React", "TypeScript", "SEO"]
   }
 ];
 
@@ -115,6 +129,7 @@ function Header({ theme, toggleTheme }: { theme: string; toggleTheme: () => void
               <a href="#work" className="hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7] transition-colors">Work</a>
               <a href="#experience" className="hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7] transition-colors">Experience</a>
               <a href="#education" className="hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7] transition-colors">Education</a>
+              <a href="#blog" className="hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7] transition-colors">Blog</a>
               <a href="#contact" className="hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7] transition-colors">Contact</a>
             </nav>
             <div className="flex items-center gap-2">
@@ -141,6 +156,7 @@ function Header({ theme, toggleTheme }: { theme: string; toggleTheme: () => void
             <a href="#work" onClick={() => setMobileMenuOpen(false)} className="text-gray-900 dark:text-[#f5f5f7] border-b border-gray-100 dark:border-white/10 pb-4">Work</a>
             <a href="#experience" onClick={() => setMobileMenuOpen(false)} className="text-gray-900 dark:text-[#f5f5f7] border-b border-gray-100 dark:border-white/10 pb-4">Experience</a>
             <a href="#education" onClick={() => setMobileMenuOpen(false)} className="text-gray-900 dark:text-[#f5f5f7] border-b border-gray-100 dark:border-white/10 pb-4">Education</a>
+            <a href="#blog" onClick={() => setMobileMenuOpen(false)} className="text-gray-900 dark:text-[#f5f5f7] border-b border-gray-100 dark:border-white/10 pb-4">Blog</a>
             <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="text-gray-900 dark:text-[#f5f5f7] pb-4">Contact</a>
           </nav>
         </div>
@@ -291,7 +307,7 @@ function About() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
             
             {/* Left Content */}
-            <div className="lg:col-span-7 flex flex-col justify-center about-reveal">
+            <div className="lg:col-span-7 flex flex-col justify-center about-reveal order-2 lg:order-1">
               <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-[#1d1d1f] dark:text-white mb-10">
                 Who I am.
               </h2>
@@ -359,7 +375,7 @@ function About() {
             </div>
             
             {/* Right Content - Gallery */}
-            <div className="lg:col-span-5 flex flex-col gap-4 about-reveal">
+            <div className="lg:col-span-5 flex flex-col gap-4 about-reveal order-1 lg:order-2">
               <div className="w-full h-[400px] lg:h-[600px] rounded-3xl overflow-hidden relative shadow-lg">
                 <AnimatePresence mode="wait">
                   <motion.img 
@@ -487,7 +503,7 @@ function Work() {
               <Dialog>
                 <DialogTrigger asChild>
                 <div 
-                  className={`group cursor-pointer text-left rounded-2xl p-6 flex flex-col justify-between h-[450px] w-[85vw] sm:w-[60vw] md:w-[45vw] lg:w-[35vw] flex-shrink-0 transition-all border ${
+                  className={`group cursor-pointer text-left rounded-2xl p-5 flex flex-col justify-between h-[360px] w-[80vw] sm:w-[50vw] md:w-[35vw] lg:w-[25vw] flex-shrink-0 transition-all border ${
                     index % 2 === 1 
                       ? 'bg-[#1d1d1f] dark:bg-white/5 border-transparent dark:border-white/10 text-white shadow-lg' 
                       : 'bg-white dark:bg-[#121212] border-gray-200 dark:border-white/10 shadow-sm'
@@ -536,8 +552,9 @@ function Work() {
                         </div>
                       </div>
                       <div className="mt-10 flex gap-4">
-                          <Button className="rounded-full px-8 bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-200">Visit Live Site</Button>
-                          <Button variant="outline" className="rounded-full px-8 border-gray-200 dark:border-white/20 dark:text-[#f5f5f7] hover:bg-gray-100 dark:hover:bg-white/10 text-[#1d1d1f]">Read Case Study</Button>
+                          <a href={project.link} target="_blank" rel="noopener noreferrer">
+                            <Button className="rounded-full px-8 bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-200">Visit Live Site</Button>
+                          </a>
                       </div>
                     </DialogDescription>
                   </DialogHeader>
@@ -655,6 +672,129 @@ function Education() {
   );
 }
 
+interface MediumArticle {
+  title: string;
+  pubDate: string;
+  link: string;
+  guid: string;
+  author: string;
+  thumbnail: string;
+  description: string;
+  content: string;
+  enclosure: any;
+  categories: string[];
+}
+
+function Blog() {
+  const [articles, setArticles] = useState<MediumArticle[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showAll, setShowAll] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    fetch('https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@aniketdoke35')
+      .then(res => res.json())
+      .then(data => {
+        setArticles(data.items || []);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  useGSAP(() => {
+    if (!loading && articles.length > 0) {
+      gsap.fromTo('.blog-item', 
+        { opacity: 0, y: 30 },
+        { 
+          opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'power2.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+          }
+        }
+      );
+    }
+  }, { scope: sectionRef, dependencies: [loading, articles] });
+
+  // extract image from content if thumbnail is not provided
+  const extractImage = (content: string) => {
+    const match = content.match(/<img[^>]+src="([^">]+)"/);
+    return match ? match[1] : 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1600&auto=format&fit=crop';
+  };
+
+  const stripHtml = (html: string) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || "";
+  };
+
+  return (
+    <section id="blog" ref={sectionRef} className="py-16 md:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 text-left">
+        <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7] mb-12">
+          Latest Writings.
+        </h2>
+        
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <div className="w-8 h-8 border-4 border-[#0066cc] border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {(showAll ? articles : articles.slice(0, 3)).map((article, i) => (
+              <a 
+                key={article.guid} 
+                href={article.link} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group blog-item opacity-0 bg-white dark:bg-[#121212] rounded-3xl overflow-hidden border border-gray-200 dark:border-white/10 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full"
+              >
+                <div className="h-48 w-full overflow-hidden relative">
+                  <img 
+                    src={article.thumbnail || extractImage(article.description || article.content)} 
+                    alt={article.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+                </div>
+                <div className="p-6 flex flex-col flex-grow">
+                  <div className="text-xs font-bold text-[#0066cc] dark:text-blue-400 uppercase tracking-widest mb-3">
+                    {new Date(article.pubDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  </div>
+                  <h3 className="text-xl font-bold text-[#1d1d1f] dark:text-[#f5f5f7] mb-3 group-hover:text-[#0066cc] dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+                    {article.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 mb-6 flex-grow">
+                    {stripHtml(article.description).substring(0, 150)}...
+                  </p>
+                  <div className="text-sm font-semibold text-[#1d1d1f] dark:text-[#f5f5f7] flex items-center gap-2 mt-auto">
+                    Read Article <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  </div>
+                </div>
+              </a>
+            ))}
+            </div>
+            {articles.length > 3 && (
+              <div className="mt-12 flex justify-center">
+                <Button 
+                  onClick={() => setShowAll(!showAll)}
+                  variant="outline" 
+                  className="rounded-full px-8 py-6 text-sm font-semibold border-[#1d1d1f] hover:bg-[#1d1d1f] hover:text-white dark:border-white/20 dark:text-[#f5f5f7] dark:hover:bg-white/10 transition-all text-[#1d1d1f]"
+                >
+                  {showAll ? 'Show Less' : 'View All Articles'}
+                </Button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </section>
+  );
+}
+
 function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
   
@@ -759,6 +899,7 @@ export default function App() {
             <Work />
             <Experience />
             <Education />
+            <Blog />
             <Contact />
           </main>
           <Footer />
