@@ -261,9 +261,9 @@ function About() {
   const [activeIndex, setActiveIndex] = useState(0);
   
   const ABOUT_IMAGES = [
-    "https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=1600&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?q=80&w=1600&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=1600&auto=format&fit=crop",
+    "/about-1.jpg",
+    "/about-2.jpg",
+    "/about-3.jpg",
   ];
 
   useGSAP(() => {
