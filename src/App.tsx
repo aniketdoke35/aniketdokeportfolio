@@ -129,6 +129,7 @@ function Header({ theme, toggleTheme }: { theme: string; toggleTheme: () => void
               <a href="#work" className="hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7] transition-colors">Work</a>
               <a href="#experience" className="hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7] transition-colors">Experience</a>
               <a href="#education" className="hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7] transition-colors">Education</a>
+              <a href="#repositories" className="hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7] transition-colors">Repositories</a>
               <a href="#blog" className="hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7] transition-colors">Blog</a>
               <a href="#contact" className="hover:text-[#1d1d1f] dark:hover:text-[#f5f5f7] transition-colors">Contact</a>
             </nav>
@@ -156,6 +157,7 @@ function Header({ theme, toggleTheme }: { theme: string; toggleTheme: () => void
             <a href="#work" onClick={() => setMobileMenuOpen(false)} className="text-gray-900 dark:text-[#f5f5f7] border-b border-gray-100 dark:border-white/10 pb-4">Work</a>
             <a href="#experience" onClick={() => setMobileMenuOpen(false)} className="text-gray-900 dark:text-[#f5f5f7] border-b border-gray-100 dark:border-white/10 pb-4">Experience</a>
             <a href="#education" onClick={() => setMobileMenuOpen(false)} className="text-gray-900 dark:text-[#f5f5f7] border-b border-gray-100 dark:border-white/10 pb-4">Education</a>
+            <a href="#repositories" onClick={() => setMobileMenuOpen(false)} className="text-gray-900 dark:text-[#f5f5f7] border-b border-gray-100 dark:border-white/10 pb-4">Repositories</a>
             <a href="#blog" onClick={() => setMobileMenuOpen(false)} className="text-gray-900 dark:text-[#f5f5f7] border-b border-gray-100 dark:border-white/10 pb-4">Blog</a>
             <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="text-gray-900 dark:text-[#f5f5f7] pb-4">Contact</a>
           </nav>
@@ -672,6 +674,117 @@ function Education() {
   );
 }
 
+interface GithubRepo {
+  id: number;
+  name: string;
+  description: string;
+  html_url: string;
+  stargazers_count: number;
+  language: string;
+  updated_at: string;
+}
+
+function GithubRepos() {
+  const [repos, setRepos] = useState<GithubRepo[]>([]);
+  const [loading, setLoading] = useState(true);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    fetch('https://api.github.com/users/aniketdoke35/repos?sort=updated&per_page=6')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          // Filter out the current portfolio repo and forks if desired
+          setRepos(data.filter(repo => repo.name !== 'aniketdokeportfolio' && !repo.fork));
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  useGSAP(() => {
+    if (!loading && repos.length > 0) {
+      gsap.fromTo('.repo-card', 
+        { opacity: 0, scale: 0.9 },
+        { 
+          opacity: 1, scale: 1, duration: 0.5, stagger: 0.1, ease: 'back.out(1.2)',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 80%',
+          }
+        }
+      );
+    }
+  }, { scope: sectionRef, dependencies: [loading, repos] });
+
+  return (
+    <section id="repositories" ref={sectionRef} className="py-24 bg-gray-50 dark:bg-white/[0.02]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 text-left">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+          <div>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7]">
+              GitHub Repositories.
+            </h2>
+            <p className="text-gray-500 dark:text-gray-400 mt-4 text-lg max-w-xl">
+              A selection of my recent open-source work and projects fetched directly from GitHub.
+            </p>
+          </div>
+          <a href="https://github.com/aniketdoke35" target="_blank" rel="noopener noreferrer">
+             <Button variant="outline" className="rounded-full px-6 border-gray-300 dark:border-white/10 text-xs font-bold uppercase tracking-widest hover:bg-gray-100 dark:hover:bg-white/5 transition-all">
+                Follow on GitHub
+             </Button>
+          </a>
+        </div>
+
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="h-48 rounded-2xl bg-gray-200 dark:bg-white/5 animate-pulse" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {repos.map((repo) => (
+              <a 
+                key={repo.id} 
+                href={repo.html_url} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="repo-card opacity-0 group p-8 bg-white dark:bg-[#121212] rounded-2xl border border-gray-200 dark:border-white/10 hover:border-[#0066cc] dark:hover:border-blue-500 transition-all shadow-sm hover:shadow-md flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-start justify-between mb-4">
+                    <Code className="text-[#0066cc] dark:text-blue-400" size={24} />
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-gray-400 dark:text-gray-500">
+                      <svg fill="currentColor" viewBox="0 0 16 16" width="12" height="12"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"></path></svg>
+                      {repo.stargazers_count}
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold text-[#1d1d1f] dark:text-[#f5f5f7] mb-2 group-hover:text-[#0066cc] dark:group-hover:text-blue-400 transition-colors">
+                    {repo.name}
+                  </h3>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm line-clamp-2 mb-4 font-medium">
+                    {repo.description || "No description provided."}
+                  </p>
+                </div>
+                <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100 dark:border-white/5">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#0066cc] dark:text-blue-400">
+                    {repo.language || "TypeScript"}
+                  </span>
+                  <ArrowUpRight size={14} className="text-gray-300 group-hover:text-[#0066cc] dark:group-hover:text-blue-400 transition-all transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 interface MediumArticle {
   title: string;
   pubDate: string;
@@ -899,6 +1012,7 @@ export default function App() {
             <Work />
             <Experience />
             <Education />
+            <GithubRepos />
             <Blog />
             <Contact />
           </main>
