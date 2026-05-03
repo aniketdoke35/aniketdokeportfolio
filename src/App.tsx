@@ -21,7 +21,7 @@ const PROJECTS = [
     title: "LetsMakeCV",
     category: "AI Resume Builder",
     description: "An AI-powered ATS resume builder that helps users craft professional resumes with advanced tools. Developed using React and TypeScript for a robust frontend.",
-    image: "/project-1.png",
+    image: "project-1.png",
     link: "https://letsmakecv.com/",
     color: "bg-blue-50",
     tags: ["React", "TypeScript", "Tailwind CSS"]
@@ -31,7 +31,7 @@ const PROJECTS = [
     title: "Stocx OS",
     category: "E-commerce Tracker",
     description: "A trendy e-commerce platform interface for tracking out-of-stock items and discovering emerging brands. Built with React, TypeScript, and modern UI practices.",
-    image: "/project-2.png",
+    image: "project-2.png",
     link: "https://oss-4--stocx-os.netlify.app/",
     color: "bg-red-50",
     tags: ["React", "TypeScript", "Vite"]
@@ -41,7 +41,7 @@ const PROJECTS = [
     title: "ConnectFM Media Network",
     category: "Media Portal",
     description: "A comprehensive media network platform featuring news, entertainment, videos, and live radio broadcasting. Integrated with scalable backend technologies.",
-    image: "/project-3.png",
+    image: "project-3.png",
     link: "https://staging.connectfm.ca/",
     color: "bg-rose-50",
     tags: ["React", "TypeScript", "Node.js"]
@@ -51,7 +51,7 @@ const PROJECTS = [
     title: "Room Wala",
     category: "Room Sharing Platform",
     description: "India's #1 room sharing platform that connects verified roommates. Implemented advanced search, filtering, and user authentication.",
-    image: "/project-4.png",
+    image: "project-4.png",
     link: "https://roomwala.in/",
     color: "bg-purple-50",
     tags: ["React", "TypeScript", "Next.js"]
@@ -61,7 +61,7 @@ const PROJECTS = [
     title: "Ashirwad Tour Planner",
     category: "Travel Agency",
     description: "A complete tour planning website showcasing domestic and international travel packages with beautiful, immersive image galleries and booking functionality.",
-    image: "/project-5.jpg",
+    image: "project-5.jpg",
     link: "https://www.ashirwadtourplanner.com/",
     color: "bg-emerald-50",
     tags: ["React", "TypeScript", "SEO"]
@@ -277,9 +277,9 @@ function About() {
   const [activeIndex, setActiveIndex] = useState(0);
   
   const ABOUT_IMAGES = [
-    "/about-1.jpg",
-    "/about-2.jpg",
-    "/about-3.jpg",
+    "about-1.jpg",
+    "about-2.jpg",
+    "about-3.jpg",
   ];
 
   useGSAP(() => {
