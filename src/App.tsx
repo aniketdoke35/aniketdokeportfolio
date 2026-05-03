@@ -682,7 +682,14 @@ interface GithubRepo {
   stargazers_count: number;
   language: string;
   updated_at: string;
+  fork: boolean;
 }
+
+const GITHUB_USERNAME = 'aniketdoke35';
+const HIDDEN_REPOSITORIES = new Set([
+  'aniketdokeportfolio',
+  `${GITHUB_USERNAME}.github.io`,
+]);
 
 function GithubRepos() {
   const [repos, setRepos] = useState<GithubRepo[]>([]);
@@ -690,12 +697,15 @@ function GithubRepos() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    fetch('https://api.github.com/users/aniketdoke35/repos?sort=updated&per_page=6')
+    fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
-          // Filter out the current portfolio repo and forks if desired
-          setRepos(data.filter(repo => repo.name !== 'aniketdokeportfolio' && !repo.fork));
+          setRepos(
+            data
+              .filter(repo => !HIDDEN_REPOSITORIES.has(repo.name))
+              .slice(0, 6)
+          );
         }
         setLoading(false);
       })
@@ -732,7 +742,7 @@ function GithubRepos() {
               A selection of my recent open-source work and projects fetched directly from GitHub.
             </p>
           </div>
-          <a href="https://github.com/aniketdoke35" target="_blank" rel="noopener noreferrer">
+          <a href={`https://github.com/${GITHUB_USERNAME}`} target="_blank" rel="noopener noreferrer">
              <Button variant="outline" className="rounded-full px-6 border-gray-300 dark:border-white/10 text-xs font-bold uppercase tracking-widest hover:bg-gray-100 dark:hover:bg-white/5 transition-all">
                 Follow on GitHub
              </Button>
@@ -1022,4 +1032,3 @@ export default function App() {
     </ReactLenis>
   );
 }
-

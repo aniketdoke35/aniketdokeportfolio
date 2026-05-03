@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react"
+import { FC, ReactNode, useEffect, useRef, useState } from "react"
 import { motion, useSpring } from "motion/react"
 
 interface Position {
@@ -7,7 +7,7 @@ interface Position {
 }
 
 export interface SmoothCursorProps {
-  cursor?: React.ReactNode
+  cursor?: ReactNode
   springConfig?: {
     damping: number
     stiffness: number
