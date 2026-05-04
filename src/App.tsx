@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import LoadingScreen from './components/LoadingScreen';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -987,6 +988,8 @@ function Footer() {
 }
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('theme') || 'dark';
@@ -1005,6 +1008,7 @@ export default function App() {
 
   return (
     <ReactLenis root>
+      {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
       <SmoothCursor />
       <div className="relative min-h-screen bg-[#f5f5f7] dark:bg-[#0a0a0a] text-[#1d1d1f] dark:text-[#f5f5f7] font-sans selection:bg-[#0066cc]/20 selection:text-[#0066cc] overflow-clip">
         {/* Animated Background */}
