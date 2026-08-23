@@ -3,7 +3,7 @@ import LoadingScreen from './components/LoadingScreen';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Menu, X, ArrowUpRight, Search, Briefcase, User, Mail, ChevronRight, Monitor, Code, Palette, MapPin, Moon, Sun, Phone, Github, Linkedin, Instagram } from 'lucide-react';
+import { Menu, X, ArrowUpRight, Search, Briefcase, User, Mail, ChevronRight, Monitor, Code, Palette, MapPin, Moon, Sun, Phone, Github, Linkedin, Instagram, ChevronDown, ChevronUp, ExternalLink, Sparkles, Filter, Layers } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ReactLenis } from 'lenis/react';
 import { SmoothCursor } from '@/components/ui/smooth-cursor';
@@ -20,52 +20,72 @@ const PROJECTS = [
   {
     id: 1,
     title: "LetsMakeCV",
-    category: "AI Resume Builder",
+    category: "AI & SaaS",
+    subtitle: "AI Resume Builder",
     description: "An AI-powered ATS resume builder that helps users craft professional resumes with advanced tools. Developed using React and TypeScript for a robust frontend.",
+    highlights: ["ATS Score Optimization", "Real-time PDF Preview", "AI Content Suggestions", "Multiple Premium Templates"],
+    metrics: "10k+ Resumes Generated",
     image: "project-1.png",
     link: "https://letsmakecv.com/",
-    color: "bg-blue-50",
-    tags: ["React", "TypeScript", "Tailwind CSS"]
+    color: "from-blue-600/20 to-cyan-500/20",
+    tags: ["React", "TypeScript", "Tailwind CSS", "OpenAI"],
+    aspectRatio: "aspect-[4/3]"
   },
   {
     id: 2,
     title: "Stocx OS",
-    category: "E-commerce Tracker",
+    category: "E-Commerce",
+    subtitle: "E-Commerce Tracker",
     description: "A trendy e-commerce platform interface for tracking out-of-stock items and discovering emerging brands. Built with React, TypeScript, and modern UI practices.",
+    highlights: ["Real-time Inventory Alerts", "Brand Discovery Engine", "Custom Watchlists", "Instant Push Notifications"],
+    metrics: "99.9% Inventory Sync",
     image: "project-2.png",
     link: "https://oss-4--stocx-os.netlify.app/",
-    color: "bg-red-50",
-    tags: ["React", "TypeScript", "Vite"]
+    color: "from-purple-600/20 to-pink-500/20",
+    tags: ["React", "TypeScript", "Vite", "Zustand"],
+    aspectRatio: "aspect-[16/10]"
   },
   {
     id: 3,
     title: "ConnectFM Media Network",
-    category: "Media Portal",
+    category: "Media & Portals",
+    subtitle: "Live Media Portal",
     description: "A comprehensive media network platform featuring news, entertainment, videos, and live radio broadcasting. Integrated with scalable backend technologies.",
+    highlights: ["24/7 Live Stream Radio", "On-Demand Video Player", "Multi-category News Feed", "High-Concurrency Streaming"],
+    metrics: "50k+ Active Listeners",
     image: "project-3.png",
     link: "https://staging.connectfm.ca/",
-    color: "bg-rose-50",
-    tags: ["React", "TypeScript", "Node.js"]
+    color: "from-rose-600/20 to-orange-500/20",
+    tags: ["React", "TypeScript", "Node.js", "WebAudio"],
+    aspectRatio: "aspect-[3/4]"
   },
   {
     id: 4,
     title: "Room Wala",
-    category: "Room Sharing Platform",
+    category: "Room Sharing",
+    subtitle: "Room Sharing Platform",
     description: "India's #1 room sharing platform that connects verified roommates. Implemented advanced search, filtering, and user authentication.",
+    highlights: ["Verified Profile Matching", "Interactive Map Search", "In-App Direct Chat", "Locality Safety Ratings"],
+    metrics: "25k+ Monthly Matches",
     image: "project-4.png",
     link: "https://roomwala.in/",
-    color: "bg-purple-50",
-    tags: ["React", "TypeScript", "Next.js"]
+    color: "from-indigo-600/20 to-blue-500/20",
+    tags: ["React", "TypeScript", "Next.js", "PostgreSQL"],
+    aspectRatio: "aspect-[16/9]"
   },
   {
     id: 5,
     title: "Ashirwad Tour Planner",
-    category: "Travel Agency",
+    category: "Travel & Services",
+    subtitle: "Travel Agency",
     description: "A complete tour planning website showcasing domestic and international travel packages with beautiful, immersive image galleries and booking functionality.",
+    highlights: ["Custom Package Builder", "Immersive Photo Galleries", "Instant Booking Enquiries", "Multi-Currency Rates"],
+    metrics: "500+ Curated Tours",
     image: "project-5.jpg",
     link: "https://www.ashirwadtourplanner.com/",
-    color: "bg-emerald-50",
-    tags: ["React", "TypeScript", "SEO"]
+    color: "from-emerald-600/20 to-teal-500/20",
+    tags: ["React", "TypeScript", "SEO", "Framer Motion"],
+    aspectRatio: "aspect-[4/3]"
   }
 ];
 
@@ -417,155 +437,263 @@ function About() {
 
 function Work() {
   const sectionRef = useRef<HTMLElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  
+  const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [expandedProjectId, setExpandedProjectId] = useState<number | null>(null);
+
+  const categories = ['All', 'AI & SaaS', 'E-Commerce', 'Media & Portals', 'Room Sharing', 'Travel & Services'];
+
+  const filteredProjects = activeCategory === 'All'
+    ? PROJECTS
+    : PROJECTS.filter(p => p.category === activeCategory);
+
   useGSAP(() => {
-    // Reveal animation
-    gsap.fromTo('.project-card', 
-      { opacity: 0, y: 50 },
+    gsap.fromTo('.masonry-card', 
+      { opacity: 0, y: 40 },
       { 
-        opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: 'power2.out',
+        opacity: 1, 
+        y: 0, 
+        duration: 0.6, 
+        stagger: 0.1, 
+        ease: 'power3.out',
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 75%',
+          start: 'top 80%',
         }
       }
     );
+  }, { scope: sectionRef, dependencies: [activeCategory] });
 
-    // Horizontal Scroll
-    const container = containerRef.current;
-    if (container) {
-      let scrollWidth = container.scrollWidth - document.documentElement.clientWidth;
-      gsap.to(container, {
-        x: -scrollWidth,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          pin: true,
-          scrub: 1,
-          start: 'top top',
-          end: () => "+=" + scrollWidth,
-        }
-      });
-    }
-
-    // Magnetic 3D tilt effect for project cards
-    const projectCards = document.querySelectorAll('.project-card.group');
-    projectCards.forEach((card) => {
-      const htmlCard = card as HTMLElement;
-      htmlCard.addEventListener('mousemove', (e) => {
-        const rect = htmlCard.getBoundingClientRect();
-        const x = e.clientX - rect.left; // x position within the element.
-        const y = e.clientY - rect.top;  // y position within the element.
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = ((y - centerY) / centerY) * -10;
-        const rotateY = ((x - centerX) / centerX) * 10;
-
-        gsap.to(htmlCard, {
-          rotateX,
-          rotateY,
-          transformPerspective: 1000,
-          transformOrigin: 'center center',
-          duration: 0.5,
-          ease: 'power2.out',
-          boxShadow: `${-rotateY * 2}px ${rotateX * 2}px 20px rgba(0,0,0,0.1)`
-        });
-      });
-
-      htmlCard.addEventListener('mouseleave', () => {
-        gsap.to(htmlCard, {
-          rotateX: 0,
-          rotateY: 0,
-          duration: 1,
-          ease: 'elastic.out(1, 0.4)',
-          boxShadow: 'none'
-        });
-      });
-    });
-  }, { scope: sectionRef });
+  const toggleExpand = (id: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setExpandedProjectId(prev => prev === id ? null : id);
+  };
 
   return (
-    <section id="work" ref={sectionRef} className="py-16 md:py-24 overflow-hidden h-screen flex flex-col justify-center relative">
-      <div className="absolute top-16 md:top-24 left-0 w-full px-4 sm:px-6 lg:px-12 z-10 pointer-events-none">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-left">
-             <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7] project-card">
-               Selected Projects.
-             </h2>
+    <section id="work" ref={sectionRef} className="py-20 md:py-32 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 text-left">
+        
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-widest text-[#0066cc] dark:text-blue-400 mb-2 flex items-center gap-1.5">
+              <Layers className="w-4 h-4" /> Portfolio Showcase
+            </span>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7]">
+              Selected Projects.
+            </h2>
+          </div>
+
+          {/* Category Filter Tabs */}
+          <div className="flex flex-wrap gap-2 bg-gray-100/80 dark:bg-white/5 p-1.5 rounded-2xl border border-gray-200/50 dark:border-white/10 backdrop-blur-md">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-4 py-2 text-xs md:text-sm font-medium rounded-xl transition-all duration-300 ${
+                  activeCategory === cat
+                    ? 'bg-white dark:bg-white/15 text-[#1d1d1f] dark:text-white shadow-sm'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
           </div>
         </div>
-      </div>
 
-      <div className="pl-4 sm:pl-6 lg:pl-12 w-full pt-20">
-        <div ref={containerRef} className="flex gap-6 w-max flex-nowrap pb-12">
-          {PROJECTS.map((project, index) => (
-            <React.Fragment key={project.id}>
-              <Dialog>
-                <DialogTrigger asChild>
-                <div 
-                  className={`group cursor-pointer text-left rounded-2xl p-5 flex flex-col justify-between h-[360px] w-[80vw] sm:w-[50vw] md:w-[35vw] lg:w-[25vw] flex-shrink-0 transition-all border ${
-                    index % 2 === 1 
-                      ? 'bg-[#1d1d1f] dark:bg-white/5 border-transparent dark:border-white/10 text-white shadow-lg' 
-                      : 'bg-white dark:bg-[#121212] border-gray-200 dark:border-white/10 shadow-sm'
-                  } project-card opacity-0`}
+        {/* Masonry Grid Layout */}
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project) => {
+              const isExpanded = expandedProjectId === project.id;
+
+              return (
+                <motion.div
+                  key={project.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                  className="break-inside-avoid mb-6 masonry-card group"
                 >
-                  <div>
-                    <div className={`relative overflow-hidden rounded-xl aspect-[4/3] mb-6 ${project.color}`}>
-                      <img 
-                        src={project.image} 
-                        alt={project.title} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
-                    </div>
-                    <div className={`text-[10px] uppercase font-bold tracking-widest mb-2 ${index % 2 === 1 ? 'text-gray-400 dark:text-gray-500' : 'text-[#0066cc] dark:text-blue-400'}`}>{project.category}</div>
-                    <h3 className={`text-xl font-bold ${index % 2 === 1 ? 'text-white' : 'text-[#1d1d1f] dark:text-[#f5f5f7]'}`}>
-                      {project.title}
-                    </h3>
-                    <p className={`text-sm mt-2 line-clamp-2 ${index % 2 === 1 ? 'text-gray-400' : 'text-gray-500 dark:text-gray-400'}`}>
-                      {project.description}
-                    </p>
-                  </div>
-                  <div className={`text-sm font-medium flex items-center gap-1 mt-6 ${index % 2 === 1 ? 'text-white' : 'text-[#1d1d1f] dark:text-[#f5f5f7]'}`}>
-                    View Case Study <span className="text-lg leading-none transition-transform group-hover:translate-x-1">→</span>
-                  </div>
-                </div>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-2xl border-0 p-0 overflow-hidden rounded-[2rem] bg-white dark:bg-[#121212] text-[#1d1d1f] dark:text-[#f5f5f7]">
-                <div className="relative h-64 sm:h-80 w-full">
-                    <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
-                </div>
-                <div className="p-8 sm:p-10">
-                  <Badge variant="outline" className="mb-4 text-xs tracking-wider uppercase bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/10 dark:text-gray-300">{project.category}</Badge>
-                  <DialogHeader>
-                    <DialogTitle className="text-3xl font-bold tracking-tight mb-2 dark:text-[#f5f5f7]">{project.title}</DialogTitle>
-                    <DialogDescription className="text-base text-gray-600 dark:text-gray-400 leading-relaxed pt-2">
-                      {project.description}
-                      <div className="mt-8">
-                        <h4 className="text-sm font-semibold text-gray-900 dark:text-[#f5f5f7] mb-3 uppercase tracking-wider">Technologies</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {project.tags.map(tag => (
-                            <span key={tag} className="text-sm px-3 py-1 bg-gray-100 dark:bg-white/10 text-gray-800 dark:text-gray-200 rounded-lg">
-                              {tag}
+                  <div className="bg-white dark:bg-[#121212] border border-gray-200/80 dark:border-white/10 rounded-3xl p-6 transition-all duration-500 hover:shadow-2xl hover:border-gray-300 dark:hover:border-white/20 flex flex-col justify-between relative overflow-hidden backdrop-blur-xl">
+                    
+                    {/* Background Subtle Gradient */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-3xl`} />
+
+                    <div className="relative z-10">
+                      {/* Image Thumbnail Container */}
+                      <div className={`relative overflow-hidden rounded-2xl ${project.aspectRatio} mb-5 bg-gray-100 dark:bg-white/5`}>
+                        <img
+                          src={project.image}
+                          alt={project.title}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+
+                        {/* Top Badges overlay */}
+                        <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none z-10">
+                          <span className="text-[11px] font-semibold px-3 py-1 bg-black/40 backdrop-blur-md text-white rounded-full border border-white/20 uppercase tracking-wider">
+                            {project.category}
+                          </span>
+                          {project.metrics && (
+                            <span className="text-[11px] font-semibold px-3 py-1 bg-white/90 dark:bg-black/70 backdrop-blur-md text-gray-900 dark:text-white rounded-full border border-white/20 flex items-center gap-1">
+                              <Sparkles className="w-3 h-3 text-amber-500" /> {project.metrics}
                             </span>
-                          ))}
+                          )}
+                        </div>
+
+                        {/* Action Overlay */}
+                        <div className="absolute bottom-3 right-3 flex items-center gap-2 z-10">
+                          <button
+                            onClick={(e) => toggleExpand(project.id, e)}
+                            className="p-2.5 rounded-full bg-white/90 dark:bg-gray-900/90 text-gray-900 dark:text-white hover:scale-105 transition-transform backdrop-blur-md shadow-lg border border-white/20"
+                            title={isExpanded ? "Collapse preview" : "Quick expand details"}
+                          >
+                            {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                          </button>
                         </div>
                       </div>
-                      <div className="mt-10 flex gap-4">
-                          <a href={project.link} target="_blank" rel="noopener noreferrer">
-                            <Button className="rounded-full px-8 bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-200">Visit Live Site</Button>
-                          </a>
+
+                      {/* Title & Subtitle */}
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <div>
+                          <span className="text-xs text-[#0066cc] dark:text-blue-400 font-semibold tracking-wider uppercase block">
+                            {project.subtitle}
+                          </span>
+                          <h3 className="text-2xl font-bold text-[#1d1d1f] dark:text-[#f5f5f7] tracking-tight mt-0.5">
+                            {project.title}
+                          </h3>
+                        </div>
                       </div>
-                    </DialogDescription>
-                  </DialogHeader>
-                </div>
-              </DialogContent>
-            </Dialog>
-          </React.Fragment>
-          ))}
+
+                      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4 line-clamp-3">
+                        {project.description}
+                      </p>
+
+                      {/* Tech Tags preview */}
+                      <div className="flex flex-wrap gap-1.5 mb-4">
+                        {project.tags.map(tag => (
+                          <span key={tag} className="text-xs px-2.5 py-1 bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-gray-300 rounded-md border border-gray-200/60 dark:border-white/10 font-medium">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Expandable Inline Panel */}
+                    <AnimatePresence>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3, ease: 'easeInOut' }}
+                          className="overflow-hidden border-t border-gray-100 dark:border-white/10 pt-4 mt-2 space-y-4 text-left relative z-10"
+                        >
+                          <div>
+                            <h4 className="text-xs font-bold uppercase tracking-wider text-gray-900 dark:text-[#f5f5f7] mb-2 flex items-center gap-1.5">
+                              <Sparkles className="w-3.5 h-3.5 text-blue-500" /> Key Highlights
+                            </h4>
+                            <ul className="grid grid-cols-1 gap-1.5 text-xs text-gray-600 dark:text-gray-400">
+                              {project.highlights?.map((h, i) => (
+                                <li key={i} className="flex items-center gap-2">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-[#0066cc] dark:bg-blue-400 flex-shrink-0" />
+                                  {h}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <div className="pt-2 flex items-center gap-3">
+                            <a
+                              href={project.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-xs font-semibold rounded-full hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors shadow-md"
+                            >
+                              Visit Live Site <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
+                    {/* Bottom Action Footer */}
+                    <div className="pt-4 border-t border-gray-100 dark:border-white/10 flex items-center justify-between mt-2 relative z-10">
+                      <button
+                        onClick={(e) => toggleExpand(project.id, e)}
+                        className="text-xs font-semibold text-[#0066cc] dark:text-blue-400 hover:underline flex items-center gap-1"
+                      >
+                        {isExpanded ? "Show Less" : "Expand Details"}
+                        {isExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                      </button>
+
+                      {/* Modal Dialog Trigger */}
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <button className="text-xs font-semibold text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white flex items-center gap-1 transition-colors">
+                            Full Case Study <ArrowUpRight className="w-3.5 h-3.5" />
+                          </button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-4xl lg:max-w-5xl border-0 p-0 overflow-hidden rounded-[2rem] bg-white dark:bg-[#121212] text-[#1d1d1f] dark:text-[#f5f5f7] flex flex-col md:flex-row h-auto md:h-[600px]">
+                          <div className="relative h-64 md:h-full md:w-1/2 flex-shrink-0">
+                            <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+                          </div>
+                          <div className="p-8 sm:p-10 md:w-1/2 flex flex-col overflow-y-auto">
+                            <div className="mt-auto mb-auto">
+                              <Badge variant="outline" className="mb-4 text-xs tracking-wider uppercase bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/10 dark:text-gray-300">{project.category}</Badge>
+                              <DialogHeader className="text-left">
+                                <DialogTitle className="text-3xl font-bold tracking-tight mb-2 dark:text-[#f5f5f7]">{project.title}</DialogTitle>
+                                <DialogDescription className="text-base text-gray-600 dark:text-gray-400 leading-relaxed pt-2 text-left">
+                                  {project.description}
+                                </DialogDescription>
+                              </DialogHeader>
+                              
+                              <div className="mt-6 space-y-4">
+                                <div>
+                                  <h4 className="text-xs font-semibold text-gray-900 dark:text-[#f5f5f7] mb-2 uppercase tracking-wider">Key Highlights</h4>
+                                  <ul className="space-y-1.5 text-sm text-gray-600 dark:text-gray-400">
+                                    {project.highlights?.map((h, i) => (
+                                      <li key={i} className="flex items-center gap-2">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-[#0066cc] dark:bg-blue-400" />
+                                        {h}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+
+                                <div>
+                                  <h4 className="text-xs font-semibold text-gray-900 dark:text-[#f5f5f7] mb-2 uppercase tracking-wider">Technologies</h4>
+                                  <div className="flex flex-wrap gap-2">
+                                    {project.tags.map(tag => (
+                                      <span key={tag} className="text-sm px-3 py-1 bg-gray-100 dark:bg-white/10 text-gray-800 dark:text-gray-200 rounded-lg font-medium">
+                                        {tag}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="mt-8 flex gap-4">
+                                <a href={project.link} target="_blank" rel="noopener noreferrer">
+                                  <Button className="rounded-full px-8 bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-200">
+                                    Visit Live Site <ExternalLink className="w-4 h-4 ml-2" />
+                                  </Button>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                    </div>
+
+                  </div>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
         </div>
       </div>
     </section>
